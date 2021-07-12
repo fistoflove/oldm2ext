@@ -1,0 +1,12 @@
+<?php
+
+$logo = $block->getLayout()->getBlock('logo')->getLogoSrc();
+$coninfo = $block->getCustomVarHtml('footer_contact_info');
+$pcta = $block->getCustomVarHtml('footer_phone_cta');
+$link_block_one = $block->getCustomVarHtml('footer_link_block_one');
+$link_block_two = $block->getCustomVarHtml('footer_link_block_two');
+$link_block_three = $block->getCustomVarHtml('footer_link_block_three');
+
+?>
+
+<div class="sidebar-links"><?= $link_block_one;?></div>

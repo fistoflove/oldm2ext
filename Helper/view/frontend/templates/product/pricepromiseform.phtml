@@ -1,0 +1,76 @@
+<?php
+
+$_product = $block->getProduct();
+
+$formtitle = $block->getCustomVarPlain('pp_form_title');
+$mainsub = $block->getCustomVarHtml('footer_cta_sub');
+
+?>
+<div class="ppform-holder">
+    <div class="left">
+        <div class="block-holder">
+            <?=$this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('price_promise_form')->toHtml();?>
+        </div>
+    </div>
+    <div class="right">
+        <div class="ppconfirm" id="ppconfirmdiv">
+            <div class="message-success success message">
+                <?=$this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('price_promise_confirm')->toHtml();?>
+            </div>
+        </div>
+        <div class="ppform" id="ppformdiv">
+            <form id="ppform"  data-dest="/">
+                <input type="hidden" name="client" value="3">
+                <input type="hidden" name="form" value="2">
+                <input type="hidden" name="subject" value="Price Match Request From">
+                <input type="hidden" name="message">
+                <input type="hidden" name="own_product_url" value="https://loveangels.ie<?=(isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '');?>">
+                <input type="hidden" name="own_product_name" value="<?=$_product->getName();?>">
+                <input type="hidden" name="own_product_price" value="<?=$_product->getFinalPrice();?>">
+                <div class="name">
+                    <input type="text" class="" name="firstname" id="firstname" placeholder="First Name" required="" data-msg="Please enter your first name">
+                    <input type="text" class="" name="lastname" id="lastname" placeholder="Last Name" required="" data-msg="Please enter your last name">
+                </div>
+
+                <input type="email" class="" name="email" id="emailAddress" placeholder="Email e.g. name@domain.com" aria-label="name@domain.com" required="" data-msg="Please enter a valid email address">
+                <input type="text" class="" name="comp_product_url" id="complink" placeholder="Product Link e.g. example.com/fun-toy" aria-label="example.com/fun-toy" required="" data-msg="Please enter a product link">
+                <button class="action primary" type="submit">Submit</button>
+            </form>
+            <a class="terms" title="Terms and Conditions." href="/help/price-match-guarantee.html">Terms and Conditions apply.</a>
+        </div>
+    </div>
+</div>
+<script>
+function makeJson(form) {
+    const formData = new FormData(form);
+    let jsonObject = {};
+    for (const [key, value]  of formData) {
+        jsonObject[key] = value;
+    }
+    return jsonObject;
+}
+
+function afterForm() {
+    let divElements = ["ppformdiv" , "ppconfirmdiv"];
+    divElements.forEach(function(e) {
+        document.getElementById(e).classList.toggle('submitted');
+    });
+    console.log('form submitted');
+}
+
+
+document.getElementById('ppform').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const param = {
+        headers: { "content-type":"application/json" },
+        body: JSON.stringify(makeJson(e.srcElement)),
+        method: "POST"
+        };
+    var promise = Promise.resolve();
+    promise = promise.then()
+    fetch('https://6h8l6gc9hf.execute-api.eu-west-1.amazonaws.com' + e.srcElement.dataset.dest, param)
+    .then(response => response.json())
+    .catch(error=>console.log(error))
+    afterForm()
+});
+</script>

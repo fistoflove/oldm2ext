@@ -1,0 +1,48 @@
+<?php
+
+$logo = $block->getLayout()->getBlock('logo')->getLogoSrc();
+$coninfo = $block->getCustomVarHtml('footer_contact_info');
+$pcta = $block->getCustomVarHtml('footer_phone_cta');
+$link_block_one = $block->getCustomVarHtml('footer_link_block_one');
+$link_block_two = $block->getCustomVarHtml('footer_link_block_two');
+$link_block_three = $block->getCustomVarHtml('footer_link_block_three');
+
+?>
+<div class="mid-footer">
+    <div class="left">
+        <div class="footer-logo" style="max-width:200px;">
+            <img ci-src="<?=$logo?>" ci-ratio="3.07" width="200" height="65" ci-params="func=bound" />
+        </div>
+        <div class="phone">
+            <span class="phone-icon"></span>
+            <?=$pcta;?>
+        </div>
+        <div class="contact-info">
+            <?=$coninfo;?>
+        </div>
+    </div>
+    <div class="right">
+        <div class="links-one">
+            <?=$link_block_one;?>
+        </div>
+        <div class="links-two">
+            <?=$link_block_two;?>
+        </div>
+        <div class="links-three">
+            <?=$link_block_three;?>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.scaleflex.it/plugins/js-cloudimage-responsive/4.6.5/js-cloudimage-responsive.min.js"></script>
+<script src="https://cdn.scaleflex.it/filerobot/js-cloudimage-responsive/lazysizes.min.js"></script>
+<script>
+  window.lazySizesConfig = window.lazySizesConfig || {};
+  window.lazySizesConfig.init = false;
+</script>
+<script>
+    const ciResponsive = new window.CIResponsive({
+      token: 'aonndpeydo',
+      lazyLoading: true
+    });
+    window.lazySizes.init();
+</script>

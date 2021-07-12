@@ -1,0 +1,142 @@
+<?xml version="1.0" ?>
+<widgets xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Widget:etc/widget.xsd">
+	<widget class="Annex\Widgets\Block\Widget\CategoryShowcase" id="annex_widgets_categoryshowcase">
+		<label>ANNEX - Category Showcase</label>
+		<description>Widget used to display different categories.</description>
+		<parameters>
+			<parameter name="cat_one" sort_order="10" visible="true" xsi:type="text">
+				<label>Category One ID</label>
+			</parameter>
+			<parameter name="cat_two" sort_order="10" visible="true" xsi:type="text">
+				<label>Category Two ID</label>
+			</parameter>
+			<parameter name="cat_three" sort_order="10" visible="true" xsi:type="text">
+				<label>Category Three ID</label>
+			</parameter>
+			<parameter name="cat_four" sort_order="10" visible="true" xsi:type="text">
+				<label>Category Four ID</label>
+			</parameter>
+		</parameters>
+	</widget>
+	<widget class="Annex\Widgets\Block\Widget\AnnexBlockWrapper" id="annex_widgets_annexblockwrapper">
+		<label>ANNEX - Block Wrapper</label>
+		<description>annexBlockWrapper</description>
+		<parameters>
+			<parameter name="block_id" sort_order="10" visible="true" xsi:type="text">
+				<label>block_id</label>
+			</parameter>
+		</parameters>
+	</widget>
+    <widget class="Annex\Widgets\Block\Widget\StoreAlerts" id="annex_widgets_annexstorealertsr">
+		<label>ANNEX - Store Alert</label>
+		<description>Store Wide Alert Notices</description>
+        <parameters>
+            <parameter name="block_id" xsi:type="block" visible="true" required="true" sort_order="20">
+                <label translate="true">Block</label>
+                <block class="Magento\Cms\Block\Adminhtml\Block\Widget\Chooser">
+                    <data>
+                        <item name="button" xsi:type="array">
+                            <item name="open" xsi:type="string" translate="true">Select Block...</item>
+                        </item>
+                    </data>
+                </block>
+            </parameter>
+            <parameter name="show_mobile" xsi:type="select" visible="true" source_model="Magento\Config\Model\Config\Source\Yesno">
+                <label translate="true">Show on Mobile</label>
+            </parameter>
+            <parameter name="show_checkout" xsi:type="select" visible="true" source_model="Magento\Config\Model\Config\Source\Yesno">
+                <label translate="true">Show during Checkout</label>
+            </parameter>
+            <parameter name="template" xsi:type="select" visible="true" required="true" sort_order="10">
+                <label translate="true">Template</label>
+                <options>
+                    <option name="default" value="widget/plainalert.phtml" selected="true">
+                        <label translate="true">Default Template</label>
+                    </option>
+                    <option name="fancy" value="widget/fancyalert.phtml">
+                        <label translate="true">Fancy Template</label>
+                    </option>
+                    <option name="list" value="widget/listalert.phtml">
+                        <label translate="true">List Template</label>
+                    </option>
+                </options>
+            </parameter>
+        </parameters>
+	</widget>
+	<widget id="annex_widgets_productlist" class="Annex\Widgets\Block\Widget\ProductFeed">
+        <label translate="true">ANNEX - Product Feed</label>
+        <description translate="true">Product Feed Widget</description>
+        <parameters>
+            <parameter name="title" xsi:type="text" required="false" visible="true">
+                <label translate="true">Title</label>
+            </parameter>
+            <parameter name="show_pager" xsi:type="select" visible="true"
+                       source_model="Magento\Config\Model\Config\Source\Yesno">
+                <label translate="true">Display Page Control</label>
+            </parameter>
+            <parameter name="products_per_page" xsi:type="text" required="true" visible="true">
+                <label translate="true">Number of Products per Page</label>
+                <depends>
+                    <parameter name="show_pager" value="1" />
+                </depends>
+                <value>5</value>
+            </parameter>
+            <parameter name="products_count" xsi:type="text" required="true" visible="true">
+                <label translate="true">Number of Products to Display</label>
+                <value>10</value>
+            </parameter>
+            <parameter name="cat_link" xsi:type="text" visible="true">
+                <label translate="true">Page Link</label>
+            </parameter>
+            <parameter name="template" xsi:type="select" required="true" visible="true">
+                <label translate="true">Template</label>
+                <options>
+                    <option name="default" value="Annex_Widgets::widget/productfeed.phtml" selected="true">
+                        <label translate="true">Fixed Products Grid Template</label>
+                    </option>
+                    <option name="slider" value="Annex_Widgets::widget/productfeedslider.phtml" selected="true">
+                        <label translate="true">Slider Products Grid Template</label>
+                    </option>
+                </options>
+            </parameter>
+            <parameter name="cache_lifetime" xsi:type="text" visible="true">
+                <label translate="true">Cache Lifetime (Seconds)</label>
+                <description translate="true">
+                    <![CDATA[Time in seconds between the widget updates.
+                    <br/>If not set, equals to 86400 seconds (24 hours). To update widget instantly, go to Cache Management and clear Blocks HTML Output cache.
+                    <br/>Widget will not show products that begin to match the specified conditions until cache is refreshed.]]>
+                </description>
+            </parameter>
+            <parameter name="sort_by" xsi:type="select" required="false" visible="true" source_model="Mirasvit\Sorting\Model\Config\Source\CriteriaSource">
+                <label translate="true">Sort By</label>
+            </parameter>
+            <parameter name="condition" xsi:type="conditions" visible="true" required="true" sort_order="10"
+                       class="Magento\CatalogWidget\Block\Product\Widget\Conditions">
+                <label translate="true">Conditions</label>
+            </parameter>
+        </parameters>
+        <containers>
+            <container name="content">
+                <template name="grid" value="default" />
+            </container>
+            <container name="content.top">
+                <template name="grid" value="default" />
+            </container>
+            <container name="content.bottom">
+                <template name="grid" value="default" />
+            </container>
+        </containers>
+    </widget>
+    <widget class="Annex\Widgets\Block\Widget\AnnexTextImage" id="annex_widgets_annextextimage">
+		<label>ANNEX - Text and Image</label>
+		<description>annextextimage</description>
+		<parameters>
+			<parameter name="text" visible="true" xsi:type="text">
+				<label>Text</label>
+			</parameter>
+            <parameter name="image" visible="true" xsi:type="text">
+				<label>Image Link</label>
+			</parameter>
+		</parameters>
+	</widget>
+</widgets>

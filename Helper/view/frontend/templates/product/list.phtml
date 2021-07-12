@@ -1,0 +1,158 @@
+<?php 
+/**
+ * 
+ * Copyright © Magento, Inc. All rights reserved. 
+ * 
+ * 
+ * See COPYING.txt for license details. 
+ * 
+ */
+use Magento\Framework\App\Action\Action;
+?> 
+<?php 
+/** * Product list template * * 
+ * @var $block \Magento\Catalog\Block\Product\ListProduct */
+?> 
+<?php 
+$_productCollection = $block->getLoadedProductCollection();
+$_helper = $this->helper(Magento\Catalog\Helper\Output::class);
+$_imageHelper = $block->getImageHelper();
+?> 
+<?php if (!$_productCollection->count()): ?> 
+    <div class="message info empty">
+        <div>
+            <?=$block->escapeHtml(__('We can\'t find products matching the selection.'))?>
+        </div>
+    </div>
+<?php else: ?> 
+    <?=$block->getToolbarHtml()?> 
+    <?=$block->getAdditionalHtml()?> 
+    <?php 
+    $viewMode = 'grid';
+    $imageDisplayArea = 'category_page_grid_one';
+    $imagettype = 'category_page_grid_one';
+    $showDescription = false;
+    $templateType = \Magento\Catalog\Block\Product\ReviewRendererInterface::SHORT_VIEW; /** * Position for actions regarding image size changing in vde if needed */$pos = $block->getPositioned();?> 
+    
+    <div class="product-grid-wrapper">
+        <div class="product-grid">
+            <?php /** @var $_product \Magento\Catalog\Model\Product */?> 
+            <?php foreach ($_productCollection as $_product): ?>
+                <?php 
+                $attributes = $_product->getConfigurableOptions();
+                $productImage = $block->getImage($_product, $imageDisplayArea);if ($pos != null) {$position = ' style="left:' . $productImage->getWidth() . 'px;' . 'top:' . $productImage->getHeight() . 'px;"';}
+                $cart_icon = $block->getViewFileUrl('images/basket.svg');
+                $thumb_image = $this->helper('Magento\Catalog\Helper\Image')->init($_product, 'category_page_grid_two')->keepAspectRatio(true)->getUrl();
+                $pdata = $block->getProductData($_product);
+                $pdata["mimage"] = $block->escapeUrl($productImage->getImageUrl());
+                $pdata["himage"] = $block->stripTags($thumb_image);
+                ?> 
+                <div class="product-card-wrapper">
+                    <div 
+                    class="product-card" 
+                    data-name="<?=$pdata["name"]?>" 
+                    data-price="<?=$pdata["price"]?>" 
+                    data-special-price="<?=$pdata["sprice"]?>" 
+                    data-final-price="<?=$pdata["fprice"]?>" 
+                    data-pchange="<?=$pdata["pchange"]?>" 
+                    data-main-image="<?=$pdata["mimage"]?>" 
+                    data-hover-image="<?=$pdata["himage"]?>" 
+                    data-rating="<?=$pdata["rating"]?>" 
+                    data-options="<?=$pdata["options"]?>" 
+                    data-points="<?=$pdata["points"]?>" 
+                    data-new="<?=$pdata["new"]?>" 
+                    data-fship="<?=$pdata["fship"]?>">
+                    <div class="c-image">
+                        <a href="<?=$pdata["url"]?>" class="product photo product-item-photo" tabindex="-1">
+                            <div class="labels <?=(!$pdata["sale"] ? "hide" : "top right")?>"><div class="sale">SALE</div></div>
+                            <div class="labels <?=(!$pdata["new"] ? "hide" : "top left")?>"><div class="new">NEW</div></div>
+                            <img class="bottom" src="https://aonndpeydo.cloudimg.io/v7/<?=$pdata["himage"]?>?w=200&h=200&func=bound" alt="<?=$pdata["name"]?>" ci-ratio="1"/>
+                            <img class="top" src="https://aonndpeydo.cloudimg.io/v7/<?=$pdata["mimage"]?>?w=200&h=200&func=bound" alt="<?=$pdata["name"]?>" ci-ratio="1" />
+                            
+                        </a>
+                    </div>
+                    <div class="c-info" data-container="product-<?=/* @noEscape */$viewMode?>">
+                        <div class="c-top">
+                            <div class="c-name">
+                                <a class="c-link"href="<?=$pdata["url"]?>"><?=$pdata["name"]?></a>
+                            </div>
+                            <div class="c-rewards">
+                                <span class="points"><?="Earn " . $pdata["points"] . " Angel Coins"?></span>
+                            </div>
+                            <div class="c-reviews">
+                                <a class="c-link"href="<?=$pdata["url"] . "#reviews"?>">
+                                    <?="<div class='stars' style='--rating: " . $pdata["rating"] . "'></div>"?>
+                                </a>
+                            </div>
+                        </div>
+                        <?php if ($_product->isAvailable() and $pdata["options"] > 0) :?>
+                            <?= "<div class='c-mid'>"?>
+                            <?= $block->getProductDetailsHtml($_product) ?>
+                            <?= "<div class='c-options'><span>"?>
+                            <?= $pdata["options"]?>
+                            <?= ($pdata["options"] > 1 ? 'Options' : 'Option') ?>
+                            <?= "</span></div>"?>
+                            <?= "</div>"?>
+                        <?php endif; ?>
+                        <div class="c-bottom">
+                            <div class="c-price">
+                                <span class="was">
+                                    <?php 
+                                        if ($pdata["sale"]) {
+                                            echo "<span class='old'><del>€" . number_format($pdata['price'], 2) . "</span></del>";
+                                            echo "<span class='discount'>" . $pdata['pchange'] . "% Off</span>";}
+                                    ?>
+                                </span>
+                                <span class="now <?=($pdata["sale"] ? "sale" : "")?>"><?="€" . number_format($pdata['fprice'], 2)?></span>
+                            </div>
+                            <div class="c-actions"<?=strpos($pos, $viewMode . '-actions') ? $block->escapeHtmlAttr($position) : ''?>>
+                                <div class="primary"<?=strpos($pos, $viewMode . '-primary') ? $block->escapeHtmlAttr($position) : ''?>>
+                                <?php if ($_product->isSaleable()): ?> <?php $postParams = $block->getAddToCartPostParams($_product);?> 
+                                    <form 
+                                        data-role="tocart-form" 
+                                        data-product-sku="<?=$block->escapeHtmlAttr($_product->getSku())?>" 
+                                        action="<?=$block->escapeUrl($postParams['action'])?>" 
+                                        method="post">
+                                        <input type="hidden" name="product" value="<?=/* @noEscape */$postParams['data']['product']?>">
+                                        <input type="hidden" name="<?=/* @noEscape */Action::PARAM_NAME_URL_ENCODED?>" value="<?=/* @noEscape */$postParams['data'][Action::PARAM_NAME_URL_ENCODED]?>">
+                                        <?=$block->getBlockHtml('formkey')?>
+                                        <button 
+                                            type="submit" 
+                                            class="atcb" 
+                                            onclick="wiggleIt(this)" 
+                                            data-default="Add to cart" 
+                                            data-ciad="Added" 
+                                            title="<?=$block->escapeHtmlAttr(__('Add to Cart'))?>">
+                                        </button>
+                                    </form>
+                                    <?php else: ?>
+                                        <?php if ($_product->isAvailable()): ?>
+                                            <div class="stock available">
+                                                <span><?=$block->escapeHtml(__('In stock'))?></span>
+                                            </div>
+                                        <?php else: ?>
+                                            <div class="stock unavailable"><span><?=$block->escapeHtml(__('Out of stock'))?></span>
+                                        </div>
+                                        <?php endif;?>
+                                    <?php endif;?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <?php endforeach;?>
+        </div>
+    </div>
+    <?=$block->getToolbarHtml()?> 
+    <?php if (!$block->isRedirectToCartEnabled()): ?> 
+        <script type="text/x-magento-init">
+        {
+            "[data-role=tocart-form], .form.map.checkout": {
+                "catalogAddToCart": {
+                    "product_sku": "<?=$block->escapeJs($_product->getSku())?>"
+                }
+            }
+        }</script>
+    <?php endif;?>
+<?php endif;?>

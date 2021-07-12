@@ -1,0 +1,15 @@
+<?php
+$maincta = $block->getCustomVarPlain('footer_cta_main');
+$mainsub = $block->getCustomVarHtml('footer_cta_sub');
+?>
+<div class="text-left">
+    <span class="icon"></span>
+    <?php
+    if(strlen($maincta) > 0) {
+        echo '<span class="cta-main">' . $maincta . '</span>';
+    } 
+    if(strlen($mainsub) > 0) {
+        echo '<span class="cta-sub">' . $mainsub . '</span>';
+    } 
+    ?>
+</div>

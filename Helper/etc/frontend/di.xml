@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Magento\Theme\Block\Html\Header\Logo" type="Annex\Helper\Block\Rewrite\Html\Header\Logo"/>
+    <preference for="Magento\Catalog\Block\Product\ListProduct" type="Annex\Helper\Block\Rewrite\ListProduct"/>
+    <preference for="Magento\CatalogSearch\Block\SearchResult\ListProduct" type="Annex\Helper\Block\Rewrite\ListProduct" />
+    <preference for="Mirasvit\Related\Block\BlockWrapper" type="Annex\Helper\Block\Mirasvit\Related\RelatedBlockWrapper"/>
+    <preference for="Magento\Catalog\Block\Product\View" type="Annex\Helper\Block\Rewrite\ProductView"/>
+    <preference for="Magento\Catalog\Block\Product\View\Details" type="Annex\Helper\Block\Rewrite\AnnexDetails"/>
+    <preference for="Magento\Catalog\Block\Navigation" type="Annex\Helper\Block\Rewrite\AnnexNavigation"/>
+</config>

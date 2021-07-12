@@ -1,0 +1,5 @@
+<?php if($block->getData('block_id')): ?> 
+<?php endif; ?> 
+<div class="related">
+<?php $block_id = $block->getData('block_id'); if ($block_id > 0) { echo $this->getLayout() ->createBlock('Mirasvit\Related\Block\BlockWrapper') ->setBlockId($block_id) ->toHtml(); } ?>
+</div>

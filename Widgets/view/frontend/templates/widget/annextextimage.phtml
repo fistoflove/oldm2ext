@@ -1,0 +1,18 @@
+<?php if($block->getData()): ?> 
+    <div class="text-image">
+        <div class="text-left">
+            <?php
+            if($block->getData('text')) {
+                echo '<p class="text">' . $block->getData('text') . '</p>';
+            }
+            ?>
+        </div>
+        <div class="image-right">
+        <?php
+            if($block->getData('image')) {
+                echo '<img class="image" src="' . $block->getData('image') . '" />';
+            }
+            ?>
+        </div>
+    </div>
+<?php endif; ?> 

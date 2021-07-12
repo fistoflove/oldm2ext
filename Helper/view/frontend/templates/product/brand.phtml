@@ -1,0 +1,16 @@
+<?php 
+
+$_product = $block->getProduct();
+$brand = $_product->getResource()->getAttribute('brand')->getFrontend()->getValue($_product);
+
+
+if(strlen($brand) > 0) {
+    $url = strtolower(str_replace(" ", "-", $brand));
+    ?>
+        <div class="product-brand">
+            See more from <a href="https://loveangels.ie/brand/<?= $url; ?>" style="font-weight: 600;"><?= $brand; ?></a>
+        </div>
+    <?php
+}
+?>
+
